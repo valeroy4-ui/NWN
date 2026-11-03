@@ -1,0 +1,4 @@
+*.nss -text
+*.ncs binary
+*.uti binary
+tools/nwnsc binary

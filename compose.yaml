@@ -1,0 +1,87 @@
+name: cormyr-spell-test
+services:
+  cormyr:
+    image: ghcr.io/nwnxee/unified@sha256:4f33f392801123f7c314480ebda903dd5a8b85db8fc76d9d73f8b434147435b9
+    stdin_open: true
+    tty: true
+    stop_signal: SIGINT
+    ports:
+    - 5122:5121/udp
+    volumes:
+    - ./server:/nwn/home
+    - ./logs:/nwn/run/logs.0
+    - /home/valeroy/cormyr_spell_test/server/nwnx/NWNX_PDK.so:/nwn/nwnx/NWNX_PDK.so:ro
+    environment:
+      NWN_MODULE: cormyr_spelltest
+      NWN_SERVERNAME: Cormyr Spell Test
+      NWN_PUBLICSERVER: '0'
+      NWN_PORT: '5121'
+      NWN_MAXCLIENTS: '4'
+      NWN_MINLEVEL: '1'
+      NWN_MAXLEVEL: '40'
+      NWN_PAUSEANDPLAY: '0'
+      NWN_PVP: '2'
+      NWN_SERVERVAULT: '1'
+      NWN_ELC: '0'
+      NWN_ILR: '0'
+      NWN_AUTOSAVEINTERVAL: '0'
+      NWN_RELOADWHENEMPTY: '0'
+      NWN_PLAYERPASSWORD: ''
+      NWNX_CORE_SKIP_ALL: y
+      NWNX_CREATURE_SKIP: n
+      NWNX_EVENTS_SKIP: n
+      NWNX_OBJECT_SKIP: n
+      NWNX_SERVERLOGREDIRECTOR_SKIP: n
+      NWNX_CORE_LOG_LEVEL: '6'
+      NWNX_ENCOUNTER_SKIP: n
+      NWNX_FEAT_SKIP: n
+      NWNX_UTIL_SKIP: n
+      NWNX_ADMINISTRATION_SKIP: n
+      NWNX_SQL_SKIP: n
+      NWNX_SQL_TYPE: MYSQL
+      NWNX_SQL_DATABASE: nwn
+      NWNX_AREA_SKIP: n
+      NWNX_ITEM_SKIP: n
+      NWNX_DAMAGE_SKIP: n
+      NWNX_WEAPON_SKIP: n
+      NWNX_EFFECT_SKIP: n
+      NWNX_PLAYER_SKIP: n
+      NWNX_SQL_HOST: ct-db
+      NWNX_SQL_PORT: '3306'
+      NWNX_SQL_USERNAME: ct_cormyr
+      NWNX_SQL_PASSWORD: ${MARIADB_PASSWORD:?Set MARIADB_PASSWORD in .env}
+      NWNX_PDK_SKIP: n
+      NWNX_FEEDBACK_SKIP: n
+      NWNX_ITEMPROPERTY_SKIP: n
+      NWNX_WEBHOOK_SKIP: y
+      NWNX_HTTPCLIENT_SKIP: y
+      NWN_DMPASSWORD: ${NWN_DMPASSWORD:?Set NWN_DMPASSWORD in .env}
+      NWNX_ELC_SKIP: n
+      NWNX_RENAME_SKIP: n
+    depends_on:
+      ct-db:
+        condition: service_healthy
+  ct-db:
+    image: mariadb@sha256:e487701b1f7e3f47319fe005b417c72becb67824a58b7bd35c6505f070f66dcd
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: nwn
+      MARIADB_USER: ct_cormyr
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Set MARIADB_PASSWORD in .env}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD in
+        .env}
+    volumes:
+    - /home/valeroy/cormyr_spell_test/server/database/ct_pdk_full_20261029T222233Z_8e7587:/var/lib/mysql
+    command:
+    - --character-set-server=utf8mb4
+    - --collation-server=utf8mb4_unicode_ci
+    - --innodb-buffer-pool-size=64M
+    healthcheck:
+      test:
+      - CMD
+      - healthcheck.sh
+      - --connect
+      - --innodb_initialized
+      interval: 2s
+      timeout: 5s
+      retries: 60
