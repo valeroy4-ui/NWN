@@ -1,0 +1,41 @@
+// Original Prism balance. Distances are metres; times are real game seconds.
+const float MV_CONTROL_INTERVAL = 2.0;
+const float MV_TARGET_RADIUS = 15.0;
+const float MV_ENCOUNTER_RADIUS = 40.0;
+const float MV_FIRST_SWAP = 8.0;
+const float MV_FIRST_TRIPLE = 10.0;
+const float MV_SWAP_CHECK = 8.0;
+const float MV_SWAP_COOLDOWN = 25.0;
+const float MV_TRIPLE_COOLDOWN = 40.0;
+const float MV_RECOVERY_TIME = 5.0;
+const float MV_BEAM_INTERVAL = 0.25;
+const int MV_BEAM_TICKS = 48;
+const float MV_BEAM_WIDTH = 0.75;
+const int MV_CROSS_DAMAGE = 5;
+const int MV_BREAK_DAMAGE = 25;
+const float MV_ABSORB_PAUSE = 0.5;
+const float MV_ABSORB_TIME = 1.75;
+const float MV_WARN_INTERVAL = 0.30;
+const int MV_WARN_STEPS = 12;
+const float MV_WARN_HOLD = 0.70;
+const float MV_SWEEP_INTERVAL = 0.05;
+const int MV_SWEEP_TICKS = 160;
+const float MV_SWEEP_LENGTH = 18.0;
+const float MV_SWEEP_WIDTH = 0.50;
+const float MV_SWEEP_ANGLE_STEP = 2.25;
+const int MV_SWEEP_DAMAGE = 10;
+const int MV_SWEEP_HIT_TICKS = 15; // 0.75 seconds per player, per boss.
+const float MV_SWAP_INTERVAL = 0.25;
+const int MV_SWAP_TICKS = 24;
+const float MV_SWAP_KNOCKDOWN = 12.0;
+// Preserve the original stationary Prism cast, with a bounded native effect.
+// This is an ability restriction; the AI/action queue remains untouched.
+const float MV_CAST_HOLD_MAX = 35.0;
+const int MV_IDLE = 0;
+const int MV_TRIPLE = 1;
+const int MV_ABSORB_WAIT = 2;
+const int MV_ABSORB = 3;
+const int MV_WARNING = 4;
+const int MV_SWEEP = 5;
+const int MV_RECOVERY = 6;
+const int MV_SWAP = 7;
